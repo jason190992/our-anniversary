@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For Apekshika</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fbf6f2; --ink:#3a2a2e; --muted:#8a7378; --rose:#c9566b; --rose-soft:#f3dde0;
+    --gold:#b8935a; --card:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+  h1,h2,h3{font-family:"Cormorant Garamond",serif;font-weight:600;line-height:1.15}
+  section{padding:80px 20px;max-width:760px;margin:0 auto}
+  .eyebrow{font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:block}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* Hero */
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 20px;position:relative;
+        background:radial-gradient(ellipse at top,#f6e3e6 0%,var(--bg) 60%)}
+  .hero h1{font-size:clamp(2.8rem,10vw,5.2rem);font-style:italic;font-weight:400}
+  .hero h1 span{color:var(--rose)}
+  .hero p{color:var(--muted);margin-top:16px;font-size:1.05rem;max-width:420px}
+  .heart{font-size:2rem;color:var(--rose);animation:beat 1.6s ease-in-out infinite;margin-bottom:20px}
+  @keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.12)}}
+  .scroll{position:absolute;bottom:28px;font-size:.75rem;letter-spacing:.2em;color:var(--muted);text-decoration:none}
+  .petal{position:fixed;top:-20px;color:var(--rose);opacity:.35;pointer-events:none;animation:fall linear infinite;z-index:0}
+  @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+
+  /* Stats */
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:28px}
+  .stat{background:var(--card);border-radius:18px;padding:22px 16px;text-align:center;box-shadow:0 6px 24px rgba(201,86,107,.08)}
+  .stat b{display:block;font-family:"Cormorant Garamond",serif;font-size:2.4rem;color:var(--rose);font-weight:600;line-height:1}
+  .stat small{color:var(--muted);font-size:.8rem}
+
+  /* Timeline */
+  .timeline{position:relative;margin-top:36px;padding-left:28px}
+  .timeline:before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--rose-soft)}
+  .moment{position:relative;margin-bottom:40px}
+  .moment:before{content:"";position:absolute;left:-27px;top:8px;width:14px;height:14px;border-radius:50%;background:var(--rose);box-shadow:0 0 0 5px var(--rose-soft)}
+  .moment .date{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)}
+  .moment h3{font-size:1.6rem;margin:4px 0 8px}
+  .photo{width:100%;aspect-ratio:4/3;border-radius:16px;margin-top:14px;display:flex;align-items:center;justify-content:center;
+         color:#fff;font-size:.85rem;letter-spacing:.1em;background:linear-gradient(135deg,#e7a7b2,#c9566b)}
+  .photo{position:relative;overflow:hidden}
+  .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;cursor:zoom-in}
+  .photo.alt{background:linear-gradient(135deg,#d9c3a0,#b8935a)}
+
+  /* Gallery */
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:28px}
+  .tile{aspect-ratio:1;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#f3dde0,#e7a7b2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;letter-spacing:.1em}
+  .tile:nth-child(even){background:linear-gradient(135deg,#efe3cf,#d9c3a0)}
+  .tile img{width:100%;height:100%;object-fit:cover;cursor:zoom-in;transition:transform .4s}
+  .tile img:hover{transform:scale(1.05)}
+  .lightbox{position:fixed;inset:0;background:rgba(30,20,22,.9);display:none;align-items:center;justify-content:center;padding:16px;z-index:15;cursor:zoom-out}
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:100%;max-height:90vh;border-radius:12px}
+
+  /* Letters */
+  .letters{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:28px}
+  .env{background:var(--card);border:none;border-radius:16px;padding:26px 14px;cursor:pointer;font-family:inherit;color:var(--ink);
+       box-shadow:0 6px 24px rgba(201,86,107,.08);transition:transform .25s}
+  .env:hover{transform:translateY(-4px)}
+  .env .ic{font-size:1.8rem;display:block;margin-bottom:8px}
+  .env span{font-family:"Cormorant Garamond",serif;font-size:1.15rem;font-style:italic}
+  .modal{position:fixed;inset:0;background:rgba(58,42,46,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
+  .modal.open{display:flex}
+  .note{background:#fffdf9;max-width:440px;width:100%;border-radius:18px;padding:36px 28px;position:relative;animation:pop .35s ease}
+  @keyframes pop{from{transform:scale(.9);opacity:0}}
+  .note h3{font-size:1.7rem;font-style:italic;color:var(--rose);margin-bottom:14px}
+  .note p{font-family:"Cormorant Garamond",serif;font-size:1.25rem;line-height:1.6}
+  .close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.6rem;color:var(--muted);cursor:pointer}
+
+  /* Letter */
+  .letter{background:var(--card);border-radius:20px;padding:40px 28px;margin-top:28px;box-shadow:0 6px 24px rgba(201,86,107,.08)}
+  .letter p{font-family:"Cormorant Garamond",serif;font-size:1.3rem;margin-bottom:16px}
+  .sign{text-align:right;font-style:italic;color:var(--rose)}
+
+  /* Countdown */
+  .count{display:flex;justify-content:center;gap:12px;margin-top:28px}
+  .count div{background:var(--card);border-radius:14px;padding:16px 10px;min-width:70px;text-align:center;box-shadow:0 6px 24px rgba(201,86,107,.08)}
+  .count b{display:block;font-family:"Cormorant Garamond",serif;font-size:2.2rem;color:var(--rose);line-height:1}
+  .count small{font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+
+  /* Dual clocks */
+  .clocks{display:flex;align-items:center;justify-content:center;gap:clamp(8px,3vw,18px);margin-top:22px;background:var(--card);border-radius:18px;padding:20px 16px;box-shadow:0 6px 24px rgba(201,86,107,.08)}
+  .clocks small{display:block;color:var(--muted);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+  .clocks b{font-family:"Cormorant Garamond",serif;font-size:clamp(1.5rem,6.5vw,2rem);color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  .clocks .mid{color:var(--rose);font-size:1.3rem;animation:beat 1.6s ease-in-out infinite}
+  .clock-note{margin-top:12px;color:var(--muted);font-style:italic;font-family:"Cormorant Garamond",serif;font-size:1.15rem}
+
+  .center{text-align:center}
+  h2{font-size:clamp(2rem,7vw,2.8rem)}
+  footer{text-align:center;padding:60px 20px 80px;color:var(--muted);font-size:.9rem}
+  footer .heart{font-size:1.4rem}
+  .sample{position:fixed;top:10px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:.7rem;
+          padding:5px 12px;border-radius:20px;letter-spacing:.1em;z-index:20;opacity:.85}
+</style>
+</head>
+<body>
+
+<div class="sample">SAMPLE · placeholder text</div>
+
+<header class="hero">
+  <div class="heart">♥</div>
+  <span class="eyebrow">Happy 1st Anniversary · 8 November</span>
+  <h1>Jason <span>&amp;</span> Apekshika</h1>
+  <p>Miles apart today, but never far from my heart. I made this little place just for you.</p>
+  <a href="#us" class="scroll">SCROLL ↓</a>
+</header>
+
+<section id="us" class="center reveal">
+  <span class="eyebrow">Our story in numbers</span>
+  <h2>Us, so far</h2>
+  <div class="stats">
+    <div class="stat"><b>1</b><small>year as husband &amp; wife</small></div>
+    <div class="stat"><b>9,133</b><small>km from Colombo to Dublin</small></div>
+    <div class="stat"><b>[X]</b><small>video calls &amp; counting</small></div>
+    <div class="stat"><b>∞</b><small>times I've missed you</small></div>
+  </div>
+  <div class="clocks">
+    <div><small>Me · Colombo</small><b id="t-cmb">--:--</b></div>
+    <div class="mid">♥</div>
+    <div><small>You · Dublin</small><b id="t-dub">--:--</b></div>
+  </div>
+  <p class="clock-note">Different clocks, same heartbeat.</p>
+</section>
+
+<section class="reveal">
+  <span class="eyebrow">Our journey</span>
+  <h2>How we got here</h2>
+  <div class="timeline">
+    <div class="moment reveal">
+      <div class="date">[Date]</div>
+      <h3>The day we met</h3>
+      <p>[A line or two about where you met and what you first noticed about her.]</p>
+      <div class="photo"><span>YOUR PHOTO HERE</span><img src="photos/met.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+    </div>
+    <div class="moment reveal">
+      <div class="date">[Date]</div>
+      <h3>Our first date</h3>
+      <p>[Where you went, what you ate, the moment you knew.]</p>
+      <div class="photo alt"><span>YOUR PHOTO HERE</span><img src="photos/first-date.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+    </div>
+    <div class="moment reveal">
+      <div class="date">[Date]</div>
+      <h3>The proposal</h3>
+      <p>[How you asked — and what she said.]</p>
+      <div class="photo"><span>YOUR PHOTO HERE</span><img src="photos/proposal.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+    </div>
+    <div class="moment reveal">
+      <div class="date">8 November 2025</div>
+      <h3>Forever began</h3>
+      <p>The day I got to call you my wife. [A favourite memory from our wedding day.]</p>
+      <div class="photo alt"><span>WEDDING PHOTO HERE</span><img src="photos/wedding.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+    </div>
+    <div class="moment reveal">
+      <div class="date">26 September 2026</div>
+      <h3>Celebrating with everyone we love</h3>
+      <p>Our reception — surrounded by family and friends. [A favourite moment from the night.]</p>
+      <div class="photo"><span>RECEPTION PHOTO HERE</span><img src="photos/reception.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+    </div>
+  </div>
+</section>
+
+<section class="center reveal">
+  <span class="eyebrow">Our moments</span>
+  <h2>Little pieces of us</h2>
+  <div class="gallery" id="gallery"></div>
+</section>
+
+<section class="center reveal">
+  <span class="eyebrow">Little letters</span>
+  <h2>Open when…</h2>
+  <div class="letters">
+    <button class="env" data-t="Open when you miss me" data-m="[Your message here — e.g. Close your eyes. I'm right there, holding your hand, counting down the days with you.]"><span class="ic">✉️</span><span>you miss me</span></button>
+    <button class="env" data-t="Open when you can't sleep" data-m="[Your message here — a calming memory, or a reminder of a quiet night together.]"><span class="ic">🌙</span><span>you can't sleep</span></button>
+    <button class="env" data-t="Open when you need a smile" data-m="[Your message here — an inside joke only she will get.]"><span class="ic">😊</span><span>you need a smile</span></button>
+    <button class="env" data-t="Open when you feel far away" data-m="[Your message here — why the distance is temporary and what you're looking forward to.]"><span class="ic">🌍</span><span>you feel far away</span></button>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="center">
+    <span class="eyebrow">From my heart</span>
+    <h2>A letter for you</h2>
+  </div>
+  <div class="letter">
+    <p>My dearest Apekshika,</p>
+    <p>[Your letter goes here. Tell her what this year has meant, what you love about her, and what you're dreaming about for the two of you.]</p>
+    <p>[A second paragraph — a promise, a memory, or simply how much you miss her today.]</p>
+    <p class="sign">Forever yours,<br>Jason</p>
+  </div>
+</section>
+
+<section class="center reveal">
+  <span class="eyebrow">Since we said “I do” · 8 November 2025</span>
+  <h2>Every second, yours</h2>
+  <div class="count">
+    <div><b id="cd-d">0</b><small>days</small></div>
+    <div><b id="cd-h">0</b><small>hours</small></div>
+    <div><b id="cd-m">0</b><small>mins</small></div>
+    <div><b id="cd-s">0</b><small>secs</small></div>
+  </div>
+</section>
+
+<footer>
+  <div class="heart">♥</div>
+  <p>Happy 1st Anniversary, my love. Here's to forever.</p>
+</footer>
+
+<div class="lightbox" id="lightbox"><img id="lb-img" alt=""></div>
+
+<div class="modal" id="modal">
+  <div class="note">
+    <button class="close" id="close" aria-label="Close">×</button>
+    <h3 id="nt"></h3>
+    <p id="nm"></p>
+  </div>
+</div>
+
+<script>
+  // Count up since the wedding (8 Nov 2025, Sri Lanka time)
+  const wed = new Date('2025-11-08T00:00:00+05:30');
+  const pad = n => String(n).padStart(2, '0');
+  function tick(){
+    let s = Math.max(0, Math.floor((Date.now() - wed) / 1000));
+    const d = Math.floor(s / 86400); s %= 86400;
+    const h = Math.floor(s / 3600); s %= 3600;
+    const m = Math.floor(s / 60); s %= 60;
+    document.getElementById('cd-d').textContent = d;
+    document.getElementById('cd-h').textContent = pad(h);
+    document.getElementById('cd-m').textContent = pad(m);
+    document.getElementById('cd-s').textContent = pad(s);
+  }
+  tick(); setInterval(tick, 1000);
+
+  // Colombo & Dublin clocks
+  function clocks(){
+    const f = tz => new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone: tz});
+    document.getElementById('t-cmb').textContent = f('Asia/Colombo');
+    document.getElementById('t-dub').textContent = f('Europe/Dublin');
+  }
+  clocks(); setInterval(clocks, 1000);
+
+  // Photo gallery — finds photos/gallery-1.jpg, gallery-2.jpg, ... automatically.
+  // Add as many as you like; no count to change. It stops after 3 missing numbers in a row.
+  const gal = document.getElementById('gallery');
+  const probe = n => new Promise(res => {
+    const img = new Image();
+    img.alt = '';
+    img.onload = () => res(img);
+    img.onerror = () => res(null);
+    img.src = 'photos/gallery-' + n + '.jpg';
+  });
+  (async () => {
+    let n = 1, misses = 0, found = 0;
+    while (misses < 3) {
+      const batch = await Promise.all([0,1,2,3,4,5].map(k => probe(n + k)));
+      n += 6;
+      for (const img of batch) {
+        if (img) {
+          const t = document.createElement('div');
+          t.className = 'tile';
+          t.appendChild(img);
+          gal.appendChild(t);
+          found++; misses = 0;
+        } else if (++misses >= 3) break;
+      }
+    }
+    if (!found) {   // preview placeholders until real photos are uploaded
+      for (let i = 1; i <= 6; i++) {
+        const t = document.createElement('div');
+        t.className = 'tile';
+        t.textContent = 'PHOTO ' + i;
+        gal.appendChild(t);
+      }
+    }
+  })();
+
+  // Tap any photo to see it full screen
+  const lb = document.getElementById('lightbox');
+  document.addEventListener('click', e => {
+    if (e.target.matches('.tile img, .photo img')) {
+      document.getElementById('lb-img').src = e.target.src;
+      lb.classList.add('open');
+    }
+  });
+  lb.onclick = () => lb.classList.remove('open');
+
+  // Open-when letters
+  const modal = document.getElementById('modal');
+  document.querySelectorAll('.env').forEach(b => b.addEventListener('click', () => {
+    document.getElementById('nt').textContent = b.dataset.t;
+    document.getElementById('nm').textContent = b.dataset.m;
+    modal.classList.add('open');
+  }));
+  document.getElementById('close').onclick = () => modal.classList.remove('open');
+  modal.onclick = e => { if (e.target === modal) modal.classList.remove('open'); };
+
+  // Scroll reveal
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), {threshold: .15});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Falling petals
+  for (let i = 0; i < 12; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = '❀';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.fontSize = (10 + Math.random() * 14) + 'px';
+    p.style.animationDuration = (10 + Math.random() * 12) + 's';
+    p.style.animationDelay = (-Math.random() * 20) + 's';
+    document.body.appendChild(p);
+  }
+</script>
+</body>
+</html>
