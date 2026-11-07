@@ -279,6 +279,11 @@
 </div>
 
 <script>
+  // Always start at the top (browsers otherwise reopen at the last scroll position)
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+  window.addEventListener('load', () => window.scrollTo(0, 0));
+
   // Intro gate + background music (browsers only allow sound after a tap)
   const gate = document.getElementById('gate'), song = document.getElementById('song'), btn = document.getElementById('music');
   let hasSong = true;
@@ -290,6 +295,7 @@
   function setBtn(){ btn.classList.toggle('playing', !song.paused); btn.textContent = song.paused ? '♪' : '♫'; }
   gate.addEventListener('click', () => {
     gate.classList.add('gone');
+    window.scrollTo(0, 0);
     document.body.style.overflow = '';
     if (hasSong) {
       song.play().then(() => { fadeIn(); btn.classList.add('show'); setBtn(); const n = document.getElementById('now'); n.classList.add('show'); setTimeout(() => n.classList.add('fade'), 6000); }).catch(() => { if (hasSong) btn.classList.add('show'); setBtn(); });
