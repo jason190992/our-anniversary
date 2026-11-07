@@ -402,12 +402,16 @@
     lbIdx = (i + lbList.length) % lbList.length;
     lbImg.src = lbList[lbIdx];
     lbCount.textContent = (lbIdx + 1) + ' / ' + lbList.length;
+    const many = lbList.length > 1;
+    ['lb-prev','lb-next'].forEach(id => document.getElementById(id).style.display = many ? '' : 'none');
+    lbCount.style.display = many ? '' : 'none';
   }
   function lbClose(){ lb.classList.remove('open'); }
   document.addEventListener('click', e => {
     if (e.target.matches('.tile img, .photo img, .thumbs img')) {
-      const sel = e.target.closest('#gallery') ? '#gallery img' : '.photo img, .thumbs img';
-      lbList = [...document.querySelectorAll(sel)].map(i => i.src);
+      // Browse only the photos of the same moment (or the whole gallery)
+      const group = e.target.closest('#gallery') || e.target.closest('.moment') || document;
+      lbList = [...group.querySelectorAll('.tile img, .photo img, .thumbs img')].map(i => i.src);
       lb.classList.add('open');
       lbShow(lbList.indexOf(e.target.src));
     }
@@ -418,8 +422,8 @@
   lb.addEventListener('click', e => { if (e.target === lb) lbClose(); });
   document.addEventListener('keydown', e => {
     if (!lb.classList.contains('open')) return;
-    if (e.key === 'ArrowLeft') lbShow(lbIdx - 1);
-    else if (e.key === 'ArrowRight') lbShow(lbIdx + 1);
+    if (lbList.length > 1 && e.key === 'ArrowLeft') lbShow(lbIdx - 1);
+    else if (lbList.length > 1 && e.key === 'ArrowRight') lbShow(lbIdx + 1);
     else if (e.key === 'Escape') lbClose();
   });
   let tx = null, ty = null;
