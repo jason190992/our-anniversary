@@ -49,7 +49,8 @@
          color:#fff;font-size:.85rem;letter-spacing:.1em;background:linear-gradient(135deg,#e7a7b2,#c9566b)}
   .photo{position:relative;overflow:hidden}
   .photo:has(img){aspect-ratio:auto;background:none}
-  .photo img{display:block;width:100%;height:auto;max-height:85vh;object-fit:cover;cursor:zoom-in;border-radius:16px}
+  .photo:has(img){display:flex;justify-content:center}
+  .photo img{display:block;width:auto;max-width:100%;height:auto;max-height:85vh;cursor:zoom-in;border-radius:16px}
   .photo:has(img) span{display:none}
   .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
   .thumbs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;cursor:zoom-in;display:block}
