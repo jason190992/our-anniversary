@@ -93,6 +93,24 @@
   .clocks .mid{color:var(--rose);font-size:1.3rem;animation:beat 1.6s ease-in-out infinite}
   .clock-note{margin-top:12px;color:var(--muted);font-style:italic;font-family:"Cormorant Garamond",serif;font-size:1.15rem}
 
+
+  /* Intro gate + music */
+  .gate{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;
+        background:radial-gradient(ellipse at center,#f6e3e6 0%,var(--bg) 70%);cursor:pointer;transition:opacity 1s ease,visibility 1s}
+  .gate.gone{opacity:0;visibility:hidden}
+  .gate .seal{width:86px;height:86px;border-radius:50%;background:var(--rose);color:#fff;display:flex;align-items:center;justify-content:center;
+        font-size:2.2rem;box-shadow:0 10px 30px rgba(201,86,107,.35);animation:beat 1.6s ease-in-out infinite;margin-bottom:26px}
+  .gate h2{font-style:italic;font-weight:400}
+  .gate .vol{margin-top:22px;display:inline-flex;align-items:center;gap:8px;background:var(--card);padding:10px 18px;border-radius:30px;
+        font-size:.9rem;color:var(--ink);box-shadow:0 6px 20px rgba(201,86,107,.12)}
+  .gate .tap{margin-top:18px;font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);animation:blink 2s ease-in-out infinite}
+  @keyframes blink{50%{opacity:.35}}
+  .music{position:fixed;right:16px;bottom:16px;z-index:25;width:48px;height:48px;border-radius:50%;border:none;background:var(--rose);color:#fff;
+        font-size:1.2rem;cursor:pointer;box-shadow:0 8px 24px rgba(201,86,107,.35);display:none;align-items:center;justify-content:center}
+  .music.show{display:flex}
+  .music.playing{animation:spin 6s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
   .center{text-align:center}
   h2{font-size:clamp(2rem,7vw,2.8rem)}
   footer{text-align:center;padding:60px 20px 80px;color:var(--muted);font-size:.9rem}
@@ -100,6 +118,17 @@
 </style>
 </head>
 <body>
+
+<div class="gate" id="gate">
+  <div class="seal">♥</div>
+  <span class="eyebrow">A little something for you</span>
+  <h2>For Apekshika</h2>
+  <div class="vol">🔊 Turn your volume up</div>
+  <div class="tap">Tap to open</div>
+</div>
+
+<audio id="song" src="music/song.mp3" loop preload="auto"></audio>
+<button class="music" id="music" aria-label="Play or pause music">♫</button>
 
 <header class="hero">
   <div class="heart">♥</div>
@@ -220,6 +249,26 @@
 </div>
 
 <script>
+  // Intro gate + background music (browsers only allow sound after a tap)
+  const gate = document.getElementById('gate'), song = document.getElementById('song'), btn = document.getElementById('music');
+  let hasSong = true;
+  song.addEventListener('error', () => { hasSong = false; btn.classList.remove('show'); });
+  function fadeIn(){
+    song.volume = 0;
+    const t = setInterval(() => { song.volume = Math.min(0.7, song.volume + 0.05); if (song.volume >= 0.7) clearInterval(t); }, 150);
+  }
+  function setBtn(){ btn.classList.toggle('playing', !song.paused); btn.textContent = song.paused ? '♪' : '♫'; }
+  gate.addEventListener('click', () => {
+    gate.classList.add('gone');
+    document.body.style.overflow = '';
+    if (hasSong) {
+      song.play().then(() => { fadeIn(); btn.classList.add('show'); setBtn(); }).catch(() => { if (hasSong) btn.classList.add('show'); setBtn(); });
+    }
+  });
+  btn.addEventListener('click', () => { song.paused ? song.play() : song.pause(); setBtn(); });
+  song.addEventListener('play', setBtn); song.addEventListener('pause', setBtn);
+  document.body.style.overflow = 'hidden';
+
   // Count up since the wedding (8 Nov 2025, Sri Lanka time)
   const wed = new Date('2025-11-08T00:00:00+05:30');
   const pad = n => String(n).padStart(2, '0');
