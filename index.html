@@ -51,6 +51,8 @@
   .photo:has(img){aspect-ratio:auto;background:none}
   .photo img{display:block;width:100%;height:auto;max-height:85vh;object-fit:cover;cursor:zoom-in;border-radius:16px}
   .photo:has(img) span{display:none}
+  .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  .thumbs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;cursor:zoom-in;display:block}
   .photo.alt{background:linear-gradient(135deg,#d9c3a0,#b8935a)}
 
   /* Gallery */
@@ -196,9 +198,14 @@
       <div class="photo"><span>YOUR PHOTO HERE</span><img src="photos/engaged.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
     </div>
     <div class="moment reveal">
-      <h3>Forever began</h3>
-      <p>The day I got to call you my wife. [A favourite memory from our wedding day.]</p>
+      <h3>We got married</h3>
+      <p>Standing side by side before God, our families and everyone we love — the rings, the vows, and that walk down the aisle as husband and wife. The best "yes" of my life.</p>
       <div class="photo alt"><span>WEDDING PHOTO HERE</span><img src="photos/wedding.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+      <div class="thumbs">
+        <img src="photos/wedding-2.jpg" alt="" loading="lazy" onerror="this.remove()">
+        <img src="photos/wedding-3.jpg" alt="" loading="lazy" onerror="this.remove()">
+        <img src="photos/wedding-4.jpg" alt="" loading="lazy" onerror="this.remove()">
+      </div>
     </div>
     <div class="moment reveal">
       <h3>Celebrating with everyone we love</h3>
@@ -346,7 +353,7 @@
   // Tap any photo to see it full screen
   const lb = document.getElementById('lightbox');
   document.addEventListener('click', e => {
-    if (e.target.matches('.tile img, .photo img')) {
+    if (e.target.matches('.tile img, .photo img, .thumbs img')) {
       document.getElementById('lb-img').src = e.target.src;
       lb.classList.add('open');
     }
