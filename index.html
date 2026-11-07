@@ -48,7 +48,9 @@
   .photo{width:100%;aspect-ratio:4/3;border-radius:16px;margin-top:14px;display:flex;align-items:center;justify-content:center;
          color:#fff;font-size:.85rem;letter-spacing:.1em;background:linear-gradient(135deg,#e7a7b2,#c9566b)}
   .photo{position:relative;overflow:hidden}
-  .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;cursor:zoom-in}
+  .photo:has(img){aspect-ratio:auto;background:none}
+  .photo img{display:block;width:100%;height:auto;max-height:85vh;object-fit:cover;cursor:zoom-in;border-radius:16px}
+  .photo:has(img) span{display:none}
   .photo.alt{background:linear-gradient(135deg,#d9c3a0,#b8935a)}
 
   /* Gallery */
@@ -174,8 +176,8 @@
       <div class="photo"><span>YOUR PHOTO HERE</span><img src="photos/met.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
     </div>
     <div class="moment reveal">
-      <h3>Our first date</h3>
-      <p>[Where you went, what you ate, the moment you knew.]</p>
+      <h3>The day we met</h3>
+      <p>And then, finally — no screen between us. Your smile in person was even better than every call, and in that moment I just knew.</p>
       <div class="photo alt"><span>YOUR PHOTO HERE</span><img src="photos/first-date.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
     </div>
     <div class="moment reveal">
